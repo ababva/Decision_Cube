@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Decision Cube</string>
+    <string name="cube_title">Кубик решений</string>
+    <string name="shake_phone">Встряхните телефон или нажмите кубик</string>
+    <string name="roll_cube">Бросить кубик</string>
+    <string name="rolling">Бросаю...</string>
+    <string name="lists">Списки</string>
+    <string name="history">История</string>
+    <string name="settings">Настройки</string>
+</resources>
