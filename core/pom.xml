@@ -1,47 +1,15 @@
-
-
 <project>
-
-
-<parent>
-
-
-<groupId>com.decisioncube</groupId>
-
-
-<artifactId>fitness-cube</artifactId>
-
-
-<version>1.0.0</version>
-
-
-</parent>
-
-
-<modelVersion>4.0.0</modelVersion>
-
-
-<artifactId>core</artifactId>
-
-
-<dependencies>
-
-
-<dependency>
-
-
-<groupId>org.jetbrains.kotlin</groupId>
-
-
-<artifactId>kotlin-stdlib</artifactId>
-
-
-</dependency>
-
-
-</dependencies>
-
-
+  <parent>
+    <groupId>com.decisioncube</groupId>
+    <artifactId>fitness-cube</artifactId>
+    <version>1.0.0</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>core</artifactId>
+  <dependencies>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+    </dependency>
+  </dependencies>
 </project>
-
-
