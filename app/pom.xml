@@ -13,9 +13,9 @@
 
 
 <version>1.0.0</version>
+
+
 </parent>
-
-
 <modelVersion>4.0.0</modelVersion>
 
 
@@ -23,6 +23,42 @@
 
 
 <packaging>apk</packaging>
+
+
+<dependencies>
+
+
+<dependency>
+
+
+<groupId>com.decisioncube</groupId>
+
+
+<artifactId>core</artifactId>
+
+
+<version>1.0.0</version>
+
+
+</dependency>
+
+
+<dependency>
+
+
+<groupId>com.decisioncube</groupId>
+
+
+<artifactId>viewmodel</artifactId>
+
+
+<version>1.0.0</version>
+
+
+</dependency>
+
+
+</dependencies>
 
 
 </project>
