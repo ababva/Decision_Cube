@@ -4,12 +4,12 @@
 
 
 <parent>
+
+
 <groupId>com.decisioncube</groupId>
 
 
 <artifactId>fitness-cube</artifactId>
-
-
 <version>1.0.0</version>
 
 
@@ -53,12 +53,12 @@
 
 
 <version>1.0.0</version>
+
+
 </dependency>
 
 
 <dependency>
-
-
 <groupId>androidx.compose.ui</groupId>
 
 
@@ -87,6 +87,46 @@
 
 
 </dependencies>
+
+
+<build>
+
+
+<plugins>
+
+
+<plugin>
+
+
+<groupId>com.simpligility.maven.plugins</groupId>
+
+
+<artifactId>android-maven-plugin</artifactId>
+
+
+<version>4.6.0</version>
+
+
+<configuration>
+<sdk>
+
+
+<platform>34</platform>
+
+
+</sdk>
+
+
+</configuration>
+
+
+</plugin>
+
+
+</plugins>
+
+
+</build>
 
 
 </project>
