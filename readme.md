@@ -1,4 +1,4 @@
-# Fitness Decision Cube
+# i h8 Kotlin
 
 Полнофункциональное Android‑приложение для фитнес‑тренировок с backend API на Ktor и базой данных PostgreSQL.
 
