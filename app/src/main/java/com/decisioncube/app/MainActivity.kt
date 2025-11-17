@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewModelScope
+import com.decisioncube.app.data.model.Screen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -83,10 +84,6 @@ fun FitnessCubeTheme(content: @Composable () -> Unit) {
         ),
         content = content
     )
-}
-
-enum class Screen {
-    LOGIN, REGISTER, MAIN, STATISTICS, FRIENDS, LEADERBOARD
 }
 
 enum class WorkoutType(val displayName: String, val diceValue: Int) {
@@ -813,6 +810,7 @@ fun RotatingCube(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomNavigationBar(
     currentScreen: Screen,
