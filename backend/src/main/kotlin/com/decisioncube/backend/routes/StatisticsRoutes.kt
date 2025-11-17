@@ -14,12 +14,12 @@ fun Application.configureStatisticsRoutes() {
         route("/api/statistics") {
             get("/daily") {
                 val days = call.request.queryParameters["days"]?.toIntOrNull() ?: 7
-                val userId = call.request.header("X-User-Id") ?: "demo_user"
+                val userId = call.request.headers["X-User-Id"] ?: "demo_user"
                 
                 val stats = transaction {
                     Exercises
                         .slice(Exercises.date, Exercises.id.count())
-                        .select { Exercises.userId eq userId }
+                        .select { Exercises.userId.eq(userId) }
                         .groupBy(Exercises.date)
                         .orderBy(Exercises.date to SortOrder.DESC)
                         .limit(days)

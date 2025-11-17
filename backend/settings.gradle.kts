@@ -1,2 +1,8 @@
-rootProject.name = "fitness-backend"
+rootProject.name = "decision-cube-backend"
 
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}

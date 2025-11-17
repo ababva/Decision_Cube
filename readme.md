@@ -63,13 +63,14 @@ Decision_Cube/
 
 1. **Для Android приложения**:
    - Android Studio Hedgehog или новее
-   - JDK 17
+   - JDK 17 или новее
    - Android SDK (API 24+)
    - Эмулятор Android или физическое устройство
 
 2. **Для backend**:
-   - JDK 17 или новее
+   - JDK 21 или новее (рекомендуется Java 21 или Java 24)
    - Docker и Docker Compose
+   - Gradle (обычно устанавливается автоматически)
 
 3. **Для базы данных**:
    - Docker и Docker Compose
@@ -86,30 +87,32 @@ Decision_Cube/
    cp env.example env
    ```
 
-3. При необходимости отредактируйте `env` файл (пароли, порты)
+3. При необходимости отредактируйте `env` файл (пароли, порты). По умолчанию PostgreSQL запускается на порту 5433, чтобы избежать конфликтов с локальной установкой PostgreSQL.
 
 4. Запустите PostgreSQL и pgAdmin:
    ```bash
-   docker compose -f docker-compose.yml up -d
+   docker-compose up -d
    ```
 
 5. Проверьте, что контейнеры запущены:
    ```bash
-   docker compose -f docker-compose.yml ps
+   docker-compose ps
    ```
+   Оба контейнера должны быть в статусе "Up" или "healthy".
 
 6. Доступ к сервисам:
-   - **PostgreSQL**: `localhost:5432` (порт по умолчанию)
+   - **PostgreSQL**: `localhost:5433` (порт по умолчанию, если на вашем компьютере установлен PostgreSQL, он обычно занимает 5432)
    - **pgAdmin**: `http://localhost:5050` (порт по умолчанию)
 
-7. Настройка pgAdmin:
+7. Настройка pgAdmin (опционально):
    - Откройте `http://localhost:5050` в браузере
-   - Войдите с учетными данными из файла `env`
+   - Войдите с учетными данными из файла `env` (по умолчанию admin@example.com / admin123)
    - Добавьте новый сервер:
-     - Host: `postgres`
-     - Port: `5432`
-     - Database: `fitness_db` (или из env)
-     - Username/Password: из файла `env`
+     - Host: `dc_postgres` (имя контейнера)
+     - Port: `5432` (порт внутри контейнера, не порт на хосте)
+     - Database: `decision_cube`
+     - Username: `dc_user`
+     - Password: `dc_password`
 
 ### Шаг 2: Запуск Backend API
 
@@ -120,32 +123,30 @@ Decision_Cube/
 
 2. Убедитесь, что база данных запущена (см. Шаг 1)
 
-3. Настройте переменные окружения (опционально):
-   ```bash
-   export DATABASE_URL=jdbc:postgresql://localhost:5432/fitness_db
-   export DB_USER=fitness_user
-   export DB_PASSWORD=fitness_password
-   ```
-   
-   Или создайте файл `.env` в директории `backend`:
-   ```
-   DATABASE_URL=jdbc:postgresql://localhost:5432/fitness_db
-   DB_USER=fitness_user
-   DB_PASSWORD=fitness_password
-   ```
-
-4. Запустите backend:
+3. Запустите backend:
    ```bash
    ./gradlew run
    ```
    
-   Или через IDE (IntelliJ IDEA / Android Studio):
+   При первом запуске Gradle может скачивать зависимости - это нормально. Дождитесь завершения.
+
+   Если у вас установлена Java 24, путь к ней указан в `gradle.properties`. Если используете другую версию Java, может потребоваться обновить путь в этом файле или в системных переменных окружения.
+
+   Или запустите через IDE (IntelliJ IDEA / Android Studio):
    - Откройте `backend/src/main/kotlin/com/decisioncube/backend/Application.kt`
    - Нажмите Run рядом с функцией `main()`
 
-5. Проверьте, что сервер запущен:
-   - Backend должен быть доступен на `http://localhost:8080`
-   - Проверьте логи в консоли на наличие ошибок
+4. Проверьте, что сервер запущен:
+   - Когда в консоли появится сообщение "Responding at http://0.0.0.0:8080", значит backend запущен
+   - Backend доступен на `http://localhost:8080`
+   - Для проверки выполните: `curl http://localhost:8080/api/users/search`
+
+   По умолчанию backend подключается к базе данных на порту 5433 (настройка в `DatabaseFactory.kt`). Если вы изменили порт PostgreSQL в docker-compose, обновите его и там.
+
+   Если backend не запускается, проверьте:
+   - База данных запущена: `cd docker && docker-compose ps`
+   - Правильный порт базы данных в `DatabaseFactory.kt` (должен быть 5433)
+   - Версия Java совместима (нужна Java 21 или выше)
 
 ### Шаг 3: Развертывание Android приложения в Android Studio
 
@@ -238,8 +239,11 @@ Decision_Cube/
 **Проблема**: Gradle синхронизация не завершается
 - Решение: Проверьте интернет‑соединение, очистите кеш: `File → Invalidate Caches → Invalidate and Restart`
 
-**Проблема**: Ошибки компиляции
-- Решение: Убедитесь, что используется JDK 17: `File → Settings → Build, Execution, Deployment → Build Tools → Gradle → Gradle JDK`
+**Проблема**: Ошибки компиляции в Android Studio
+- Решение: Убедитесь, что используется JDK 17 или выше: `File → Settings → Build, Execution, Deployment → Build Tools → Gradle → Gradle JDK`
+
+**Проблема**: Backend не компилируется или не запускается
+- Решение: Убедитесь, что используется Java 21 или выше. Проверьте путь к Java в `backend/gradle.properties` (файл `org.gradle.java.home`). Если используете Java 24, путь должен указывать на установку Java 24.
 
 **Проблема**: Приложение не подключается к backend
 - Решение: 
@@ -250,9 +254,11 @@ Decision_Cube/
 
 **Проблема**: Ошибки базы данных в backend
 - Решение:
-  - Убедитесь, что PostgreSQL запущен: `docker compose -f docker/docker-compose.yml ps`
-  - Проверьте переменные окружения (DATABASE_URL, DB_USER, DB_PASSWORD)
+  - Убедитесь, что PostgreSQL запущен: `cd docker && docker-compose ps`
+  - Проверьте, что порт базы данных в `DatabaseFactory.kt` соответствует порту в docker-compose (по умолчанию 5433)
+  - Убедитесь, что база данных полностью инициализировалась (подождите 10-15 секунд после запуска docker-compose)
   - Проверьте логи backend на наличие ошибок подключения
+  - Проверьте, что на порту 5433 не запущена другая база данных: `lsof -i :5433`
 
 ## API Endpoints
 
@@ -274,9 +280,11 @@ Backend предоставляет следующие endpoints:
 
 ### Изменение портов и настроек
 
-- **Backend порт**: измените в `backend/src/main/kotlin/com/decisioncube/backend/Application.kt` (по умолчанию 8080)
-- **PostgreSQL порт**: измените в `docker/docker-compose.yml`
-- **API базовый URL**: измените в `app/src/main/java/com/decisioncube/app/data/api/ApiClient.kt`
+- **Backend порт**: измените в `backend/src/main/kotlin/com/decisioncube/backend/Application.kt` (по умолчанию 8080). Также обновите `ApiClient.kt` в Android приложении, если меняете порт.
+
+- **PostgreSQL порт на хосте**: измените `POSTGRES_PORT` в файле `docker/.env` (по умолчанию 5433). После изменения не забудьте обновить порт в `backend/src/main/kotlin/com/decisioncube/backend/database/DatabaseFactory.kt`.
+
+- **API базовый URL в Android**: измените `BASE_URL` в `app/src/main/java/com/decisioncube/app/data/api/ApiClient.kt`. Для эмулятора используйте `10.0.2.2:8080`, для физического устройства - IP адрес вашего компьютера в локальной сети.
 
 ## Сборка релизной версии
 

@@ -24,7 +24,7 @@ fun Application.configureUserRoutes() {
                 }
                 
                 call.respond(UserResponse(
-                    user[Users.id].value,
+                    user[Users.id],
                     user[Users.username],
                     user[Users.email],
                     user[Users.totalExercises],
@@ -40,7 +40,7 @@ fun Application.configureUserRoutes() {
                     Users.select { Users.username like "%$query%" }
                         .map {
                             UserResponse(
-                                it[Users.id].value,
+                                it[Users.id],
                                 it[Users.username],
                                 it[Users.email],
                                 it[Users.totalExercises],
@@ -60,7 +60,7 @@ fun Application.configureUserRoutes() {
                         .limit(100)
                         .map {
                             UserResponse(
-                                it[Users.id].value,
+                                it[Users.id],
                                 it[Users.username],
                                 it[Users.email],
                                 it[Users.totalExercises],
