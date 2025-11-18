@@ -65,7 +65,7 @@ org.gradle.java.home=/путь/к/вашей/java
 Запускаем backend:
 
 ```bash
-./gradlew run
+./gradlew --no-daemon run
 ```
 
 Если первый раз запускаете, Gradle может скачивать зависимости - это нормально, подождите.
