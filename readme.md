@@ -108,11 +108,6 @@ Decision_Cube/
    - Откройте `http://localhost:5050` в браузере
    - Войдите с учетными данными из файла `env` (по умолчанию admin@example.com / admin123)
    - Добавьте новый сервер:
-     - Host: `dc_postgres` (имя контейнера)
-     - Port: `5432` (порт внутри контейнера, не порт на хосте)
-     - Database: `decision_cube`
-     - Username: `dc_user`
-     - Password: `dc_password`
 
 ### Шаг 2: Запуск Backend API
 
@@ -210,8 +205,6 @@ Decision_Cube/
 
 3. Для физического устройства:
    - Узнайте IP вашего компьютера в локальной сети:
-     - macOS/Linux: `ifconfig | grep "inet "`
-     - Windows: `ipconfig`
    - Замените в `ApiClient.kt`:
      ```kotlin
      private const val BASE_URL = "http://192.168.x.x:8080/api/"
