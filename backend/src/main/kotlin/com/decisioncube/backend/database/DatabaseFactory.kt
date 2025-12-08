@@ -9,10 +9,10 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object DatabaseFactory {
     fun init() {
         val config = HikariConfig().apply {
-            jdbcUrl = System.getenv("DATABASE_URL") ?: "jdbc:postgresql://localhost:5432/fitness_db"
+            jdbcUrl = System.getenv("DATABASE_URL") ?: "jdbc:postgresql://localhost:5433/decision_cube"
             driverClassName = "org.postgresql.Driver"
-            username = System.getenv("DB_USER") ?: "fitness_user"
-            password = System.getenv("DB_PASSWORD") ?: "fitness_password"
+            username = System.getenv("DB_USER") ?: "dc_user"
+            password = System.getenv("DB_PASSWORD") ?: "dc_password"
             maximumPoolSize = 10
             isAutoCommit = false
         }

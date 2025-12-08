@@ -17,7 +17,7 @@ fun Application.configureExerciseRoutes() {
         route("/api/exercises") {
             post {
                 val request = call.receive<ExerciseRequest>()
-                val userId = call.request.header("X-User-Id") ?: "demo_user"
+                val userId = call.request.headers["X-User-Id"] ?: "demo_user"
                 
                 transaction {
                     Exercises.insert {
@@ -30,9 +30,12 @@ fun Application.configureExerciseRoutes() {
                         it[timestamp] = System.currentTimeMillis()
                     }
                     
-                    Users.update({ Users.id eq userId }) {
-                        it[totalExercises] = Users.totalExercises + 1
-                        it[weeklyExercises] = Users.weeklyExercises + 1
+                    val user = Users.select { Users.id eq (userId as String) }.firstOrNull()
+                    if (user != null) {
+                        Users.update({ Users.id eq (userId as String) }) {
+                            it[totalExercises] = user[Users.totalExercises] + 1
+                            it[weeklyExercises] = user[Users.weeklyExercises] + 1
+                        }
                     }
                 }
                 

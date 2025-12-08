@@ -61,7 +61,7 @@ fun Application.configureAuthRoutes() {
                 call.respond(LoginResponse(
                     token = "demo_token_${user[Users.id]}",
                     user = UserResponse(
-                        user[Users.id].value,
+                        user[Users.id],
                         user[Users.username],
                         user[Users.email],
                         user[Users.totalExercises],

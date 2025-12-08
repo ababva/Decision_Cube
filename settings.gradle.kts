@@ -16,5 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Decision Cube"
 include(":app")
-include(":backend")
 
